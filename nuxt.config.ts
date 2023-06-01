@@ -22,8 +22,9 @@ export default defineNuxtConfig({
         ],
     ],
     runtimeConfig: {
-        url: process.env.URL,
-
+        public: {
+            URL: process.env.URL,
+        }
     },
     vite: {
         css: {
