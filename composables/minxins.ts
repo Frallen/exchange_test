@@ -12,3 +12,11 @@ export const setLoading = (loading: boolean): void => {
     useMain().isLoading = loading;
     overFlow(loading)
 }
+
+export const filteredDeals = <T>(state: T, query: string): T => {
+    return query ? state.filter(p => p.name.toLowerCase().includes(query)) : state
+}
+
+export const createError = (): void => {
+    showError({message: 'Попробуйте позже или перезагрузите страницу', statusCode: 404})
+}

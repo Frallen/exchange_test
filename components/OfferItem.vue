@@ -1,6 +1,6 @@
 <template>
 
-  <div class="item" @click="onSubmit" :class="{'item-active':sendId===item.ids[0]}">
+  <div class="item" @click="onSubmit" :class="{'item-active':isActiveOffer}">
     <span class="icon" v-show="isActiveOffer">
       <NuxtImg src="next.svg"></NuxtImg>
     </span>
@@ -20,9 +20,9 @@
 <script setup lang="ts">
 import {currencyItemsType} from "~/types/global.types";
 
-const {senFrom,getPrice} = useMain()
+const {sendFrom, getPrice} = useMain()
 const {sendId, getId} = storeToRefs(useMain())
-const isActiveOffer = ref<boolean>(false)
+const isActiveOffer = ref<number>()
 
 interface propsType {
   item: currencyItemsType
@@ -32,15 +32,15 @@ interface propsType {
 const {item, route} = defineProps<propsType>()
 
 
-const onSubmit = (id: number) => {
+const onSubmit = async () => {
   if (route === "send") {
-    senFrom(item.ids[0])
+    await sendFrom(item.ids[0])
     sendId.value = item.ids[0]
   } else {
     getId.value = item.ids[0]
   }
-  getPrice()
-  isActiveOffer.value ? isActiveOffer.value = false : isActiveOffer.value = true
+  await getPrice()
+  isActiveOffer.value === item.ids[0] ? isActiveOffer.value = 0 : isActiveOffer.value = item.ids[0]
 }
 
 </script>
